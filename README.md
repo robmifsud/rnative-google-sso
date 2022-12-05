@@ -76,7 +76,7 @@ After installing the package, add it as a plugin under "expo" in your [app.json]
 ```
 Finally, import it to your [App.js](SSO/App.js)
 
-`import { GoogleSignin } from '@react-native-google-signin/google-signin';`
+`import { GoogleSignin, GoogleSigninButton } from '@react-native-google-signin/google-signin';`
 
 ## Setting up Firebase project
 - Load up [firebase.google.com](https://firebase.google.com/)
@@ -124,6 +124,8 @@ npx expo start --dev-client
 ```
 
 ## Writing code to implement solution
+Unless otherwise stated, write the following code in your [App.js](SSO/App.js) file
+
 Configure webClientId. This can be found in *google-services.json* under **"oauth_client"**. Copy the client_id for client_type : 3.
 ```
 export default function App() {
@@ -161,29 +163,79 @@ export default function App() {
   //
   //
 ```
-Declare the default *onGoogleButtonPress()* function
+Implement the *onGoogleButtonPress()* function
 ```
-async function onGoogleButtonPress() {
-  // Check if your device supports Google Play
-  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
-  // Get the users ID token
-  const { idToken } = await GoogleSignin.signIn();
-
-  // Create a Google credential with the token
-  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
-
-  // Sign-in the user with the credential
-  return auth().signInWithCredential(googleCredential);
-  const user_sign_in = auth().signInWithCredential(googleCredential)
-  user_sign_in.then((user) =>{
-    console.log(user);
-  })
-  .catch((error) => {
-    console.log(error);
-  })
+const onGoogleButtonPress = async () => {
+    // Check if your device supports Google Play
+    await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+    // Get the users ID token
+    const { idToken } = await GoogleSignin.signIn();
+  
+    // Create a Google credential with the token
+    const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+  
+    // Sign-in the user with the credential
+    const user_sign_in = auth().signInWithCredential(googleCredential)
+    
+    user_sign_in.then((user) =>{
+      console.log(user);
+    })
+    .catch((error) => {
+      console.log(error);
+    })
+  }
+```
+Replace the default view with sign in button if user is not logged in and username and image if logged in
+```
+if(!user){
+  return (
+    <View style={styles.container}>
+      <GoogleSigninButton
+        style={{width:300, height: 65, marginTop:300, padding: 12}}
+        onPress={onGoogleButtonPress}
+      />
+    </View>
+  );
 }
+// else
+return(
+  <View style={styles.container}>
+    <View style={{marginTop:100, alignItems:'center'}}>
+      <Text style={styles.Text}> Welcome, {user.displayName}</Text>
+      <Image
+        source={{uri: user.photoURL}}
+        style={{height:300, width:300, borderRadius:150, margin:50}}
+      />
+    </View>
+  </View>
+)
 ```
-Replace the default
+Create a function to handle sign-out
+```
+const signOut = async () => {
+    try{
+      await GoogleSignin.revokeAccess();
+      await auth().signOut();
+    } catch (error){
+      console.error(error);
+    }
+  }
+```
+Finally, add a sign-out button to your view. You may have to import the *Button* module `import { StyleSheet, Text, View, Image, Button } from 'react-native';`
+```
+#
+#
+<Image
+  source={{uri: user.photoURL}}
+  style={{height:200, width:200, borderRadius:100, margin:50}}
+/>
+<Button title='Sign Out' onPress={signOut}/>
+#
+#
+```
+You can view and manage users from your Firebase app
+
+![Firebase Users](Images/Firebase%20Users.png)
 # References
 - https://www.youtube.com/watch?v=d_Vf41Sb0v0
 - https://rnfirebase.io/auth/social-auth
