@@ -1,5 +1,5 @@
 # cis3186-sso
-Code to be used during SSO tutorial (to be held on 07/12/22)
+Code to be used during SSO tutorial (to be held on 07/12/22 14:00)
 
 # Team 2
 - Adam Ruggier
@@ -15,7 +15,7 @@ node -v
 npx -v
 # 6.14.9
 ```
-- Instal Expo Applicatoin Services CLI tool
+- Instal Expo Application Services CLI tool
 ```
 npm install --global eas-cli
 ```
@@ -50,9 +50,11 @@ Install expo-dev-client
 ```
 npx expo install expo-dev-client
 ```
-Import it in your [App.js](SSO/App.js)
+Import thse in your [App.js](SSO/App.js)
 
-`import 'expo-dev-client'`
+`import 'expo-dev-client';`
+
+`import auth from '@react-native-firebase/auth';`
 
 Build **.apk**. Prompt may ask you to log-in using your Expo account. Select *Y* when prompted to create EAS project and build new keystore.
 
@@ -69,10 +71,12 @@ After installing the package, add it as a plugin under "expo" in your [app.json]
 {
   "expo": {
     "plugins": ["@react-native-google-signin/google-signin"],
-    .
-    .
-    .
+    //
+    //
 ```
+Finally, import it to your [App.js](SSO/App.js)
+
+`import { GoogleSignin } from '@react-native-google-signin/google-signin';`
 
 ## Setting up Firebase project
 - Load up [firebase.google.com](https://firebase.google.com/)
@@ -101,16 +105,86 @@ Now you can add the file in your [app.json](SSO/app.json) under expo/android as 
 ```
 {
   "expo": {
-    .
-    .
+    //
+    //
     "android": {
       "googleServicesFile": "./google-services.json",
-       .
-       .
-       .
+       //
+       //
+       //
 ```
 - Do not forget to paste *google-services.json* file you downloaded earlier into your project directory
 - Build the project again
 ```
 eas build --profile development --platform android
 ```
+Run the following command and copy the link to your newly built application
+```
+npx expo start --dev-client
+```
+
+## Writing code to implement solution
+Configure webClientId. This can be found in *google-services.json* under **"oauth_client"**. Copy the client_id for client_type : 3.
+```
+export default function App() {
+  GoogleSignin.configure({
+    webClientId: '',
+  });
+  return (
+    //
+    //
+```
+Create two states, for when user is logged in and logged out
+
+`import React, { useState, useEffect } from 'react';`
+
+Set initialising state to block app from rendering while Firebase establishes a connection and a functiion to handle state changes.
+```
+export default function App() {
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true);
+  const [user, setUser] = useState();
+
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user);
+    if (initializing) setInitializing(false);
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
+    return subscriber; // unsubscribe on unmount
+  }, []);
+
+  if (initializing) return null;
+  //
+  //
+  //
+```
+Declare the default *onGoogleButtonPress()* function
+```
+async function onGoogleButtonPress() {
+  // Check if your device supports Google Play
+  await GoogleSignin.hasPlayServices({ showPlayServicesUpdateDialog: true });
+  // Get the users ID token
+  const { idToken } = await GoogleSignin.signIn();
+
+  // Create a Google credential with the token
+  const googleCredential = auth.GoogleAuthProvider.credential(idToken);
+
+  // Sign-in the user with the credential
+  return auth().signInWithCredential(googleCredential);
+  const user_sign_in = auth().signInWithCredential(googleCredential)
+  user_sign_in.then((user) =>{
+    console.log(user);
+  })
+  .catch((error) => {
+    console.log(error);
+  })
+}
+```
+Replace the default
+# References
+- https://www.youtube.com/watch?v=d_Vf41Sb0v0
+- https://rnfirebase.io/auth/social-auth
+- https://github.com/react-native-google-signin/google-signin
