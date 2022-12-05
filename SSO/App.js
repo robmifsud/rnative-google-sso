@@ -54,7 +54,7 @@ export default function App() {
   if (initializing) return null;
 
   GoogleSignin.configure({
-    webClientId: '1077347357364-tngunu9i2ti4dp8m7pt10n9b70k6pad4.apps.googleusercontent.com',
+    webClientId: '',
   });
 
   if(!user){

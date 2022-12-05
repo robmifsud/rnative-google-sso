@@ -19,8 +19,9 @@ npx -v
 ```
 npm install --global eas-cli
 ```
-- Ensure you have an [Expo](https://expo.dev/signup) account. If you attended any of the react-native tutorials with Eman and used Expo Go you should have an account already.
-- Install Expo Go app [IOS](https://apps.apple.com/us/app/expo-go/id982107779)/[Android](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US). It could be the case that you might not be able to run project on the University network(eduroam), in which case we suggest you use your phone's hotspot.
+- Ensure you have an [Expo](https://expo.dev/signup) account. If you attended any of the react-native tutorials with Eman and used Expo Go you should have an account already
+- Install [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US) app and log-in with your account. It could be the case that you might not be able to run project on the University network(eduroam), in which case we suggest you use your phone's hotspot
+- This tutorial will only work on an android device. If you do not have access to one we suggest you use an emulator such as [BlueStacks](https://www.bluestacks.com/download.html) which we tested and works as expected. If using an emulator please download the [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US) app on the emulator itself
 # Implementation
 The code required to implement this feature is fairly simple however an extensive setup process is involved. All necessary steps are outlined below.
 
@@ -30,15 +31,13 @@ Create new expo project with blank template. You can name it 'SSO'
 ```
 npx create-expo-app --template
 ```
+
 Navigate to project directory
 ```
 cd SSO
 ```
-Run project, scan the qr code from your Expo Go app and verify that it works. (Ensure your laptop and phone are on the same network)
-```
-npx expo start
-```
-Install the React Native Firebase "app" module to the root of your React Native project with npm.
+
+Install the React Native Firebase app module to the root of your React Native project with npm.
 ```
 npm install --save @react-native-firebase/app
 ```
@@ -50,7 +49,7 @@ Install expo-dev-client
 ```
 npx expo install expo-dev-client
 ```
-Import thse in your [App.js](SSO/App.js)
+Import the following in your [App.js](SSO/App.js)
 
 `import 'expo-dev-client';`
 
