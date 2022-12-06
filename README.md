@@ -8,7 +8,7 @@ Code to be used during SSO tutorial (to be held on 07/12/22 14:00)
 - Robert Mifsud
 
 # Prerequisites
-- Verify you have Node.js installed (in cmd/terminal). You can download it form [here](https://nodejs.org/en/download/).
+- Verify you have Node.js installed (in cmd/terminal). You can download it from [here](https://nodejs.org/en/download/).
 ```
 node -v
 # v14.15.3
@@ -20,8 +20,8 @@ npx -v
 npm install --global eas-cli
 ```
 - Ensure you have an [Expo](https://expo.dev/signup) account. If you attended any of the react-native tutorials with Eman and used Expo Go you should have an account already
-- Install [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US) app and log-in with your account. It could be the case that you might not be able to run project on the University network(eduroam), in which case we suggest you use your phone's hotspot
-- This tutorial will only work on an android device. If you do not have access to one we suggest you use an emulator such as [BlueStacks](https://www.bluestacks.com/download.html) which we tested and works as expected. If using an emulator please download the [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US) app on the emulator itself
+- Install [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US) app and log-in with your account. It could be the case that you might not be able to run the project on the University network(eduroam), in which case we suggest you use your phone's hotspot
+- This tutorial will only work on an android device. If you do not have access to one we suggest you use an emulator such as [BlueStacks](https://www.bluestacks.com/download.html) which we tested and works as expected (We recommend you get the 'Pie 64-bit' version). If using an emulator please download the [Expo Go](https://play.google.com/store/apps/details?id=host.exp.exponent&hl=en&gl=US) app on the emulator itself
 # Implementation
 The code required to implement this feature is fairly simple however an extensive setup process is involved. All necessary steps are outlined below.
 
@@ -58,8 +58,14 @@ Import the following in your [App.js](SSO/App.js)
 Build **.apk**. Prompt may ask you to log-in using your Expo account. Select *Y* when prompted to create EAS project and build new keystore.
 
 This process may take 5~10 minutes.
+
+If you get a 'running scripts is diabled' error try running the command on cmd instead of Windows PowerShell
 ```
 eas build --profile development --platform android
+```
+To test your build, run the following command, and paste the link to your Expo Go app
+```
+npx epo start --dev-client
 ```
 Install google sign-in package
 ```
@@ -117,7 +123,7 @@ Now you can add the file in your [app.json](SSO/app.json) under expo/android as 
 ```
 eas build --profile development --platform android
 ```
-Run the following command and copy the link to your newly built application
+Run the following command and copy the link to your Expo Go app
 ```
 npx expo start --dev-client
 ```
