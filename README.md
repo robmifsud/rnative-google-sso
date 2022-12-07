@@ -1,5 +1,5 @@
 # cis3186-sso
-Code to be used during SSO tutorial (to be held on 07/12/22 14:00)
+Resources and code to be used during SSO tutorial (to be held on 07/12/22 14:00)
 
 # Team 2
 - Adam Ruggier
@@ -65,7 +65,7 @@ eas build --profile development --platform android
 ```
 To test your build, run the following command, and paste the link to your Expo Go app
 ```
-npx epo start --dev-client
+npx expo start --dev-client
 ```
 Install google sign-in package
 ```
