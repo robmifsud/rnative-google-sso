@@ -1,5 +1,5 @@
-# cis3186-sso
-Resources and code to be used during SSO tutorial (to be held on 07/12/22 14:00)
+# React Native Google Sign In Tutorial
+Resources and code to be used for implementing Google SSO with React Native and Expo.
 
 # Team 2
 - Adam Ruggier
